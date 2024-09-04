@@ -5,7 +5,7 @@ import Footer from "../components/Footer/Footer";
 const DefaultLayout = ({ children }) => {
   return (
     <>
-      <div>
+      <div className=" text-[15px]">
         <Header></Header>
       </div>
       <div>{children}</div>
