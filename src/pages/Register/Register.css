@@ -1,0 +1,7 @@
+.btn-register {
+  background: linear-gradient(45deg, #ff636d, #ff816c);
+}
+
+.btn-register:hover {
+  background: #ff636d;
+}

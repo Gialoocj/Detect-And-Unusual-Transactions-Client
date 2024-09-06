@@ -7,6 +7,9 @@ module.exports = {
         "text-gradient": "linear-gradient(to right, #FF636D, #FF816C)",
         "gradient-light-pink": "linear-gradient(45deg, #f0d4d8, #f0d4d8)",
       },
+      backgroundColor: {
+        gradient: "linear-gradient(to right, #FF636D, #FF816C)",
+      },
       backgroundClip: {
         text: "text",
       },

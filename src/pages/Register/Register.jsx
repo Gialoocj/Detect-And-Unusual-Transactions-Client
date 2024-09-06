@@ -8,9 +8,9 @@ import loginBanner from "../../assets/images/bg_login_register.webp";
 import fbImg from "../../assets/images/fb-btn.svg";
 import googleImg from "../../assets/images/gp-btn.svg";
 import { Link } from "react-router-dom";
-import "./Login.css";
+import "./Register.css";
 
-const Login = () => {
+const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [hasCharacter, setHasCharacter] = useState("");
 
@@ -33,14 +33,14 @@ const Login = () => {
         <span>
           <ArrowRightIcon className={`w-[14px] mx-3 font-bold`} />
         </span>
-        <span>Đăng nhập tài khoản</span>
+        <span>Đăng ký tài khoản</span>
       </div>
 
       <div
         className={`bg-[#f0d4d8] w-full py-[20px] lg:py-[80px] lg:px-[160px] md:px-[32px] px-[12px] `}
       >
         <div
-          className={`w-full h-[532px] bg-white rounded-xl p-5 grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5`}
+          className={`w-full  bg-white rounded-xl px-5 lg:py-[40px] grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5`}
         >
           <div className="relative col-span-1 hidden md:block">
             <img
@@ -52,16 +52,36 @@ const Login = () => {
           </div>
           <div className="col-span-1 flex flex-col items-center justify-center lg:px-[110px] md:px-[20px] text-sm ">
             <h1 className="uppercase lg:text-2xl md:text-xl text-center">
-              Đăng nhập tài khoản
+              Đăng ký tài khoản
             </h1>
 
             <div className="w-full mt-6">
+              <input
+                type="text"
+                name="fullname"
+                id=""
+                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                placeholder="Họ tên"
+              />
+            </div>
+
+            <div className="w-full mt-3">
               <input
                 type="email"
                 name="email"
                 id=""
                 className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
                 placeholder="Email"
+              />
+            </div>
+
+            <div className="w-full mt-3">
+              <input
+                type="text"
+                name="phoneNumber"
+                id=""
+                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                placeholder="Số điện thoại"
               />
             </div>
 
@@ -79,7 +99,13 @@ const Login = () => {
 
               <button>
                 {hasCharacter.length > 0 ? (
-                  <div>{isShowPassword ? <EyeOffIcon /> : <EyeIcon />}</div>
+                  <>
+                    {isShowPassword ? (
+                      <EyeOffIcon className={`w-[24px]`} />
+                    ) : (
+                      <EyeIcon className={`w-[24px]`} />
+                    )}
+                  </>
                 ) : null}
               </button>
             </div>
@@ -117,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

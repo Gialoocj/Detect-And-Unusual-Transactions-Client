@@ -1,3 +1,3 @@
-const routes = { home: "/", login: "/login" };
+const routes = { home: "/", login: "/login", register: "/register" };
 
 export default routes;

@@ -34,6 +34,7 @@ const Header = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenMenuLoggedIn, setIsOpenMenuLoggedIn] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -78,6 +79,15 @@ const Header = () => {
     navigate(target);
   };
 
+  useEffect(() => {
+    const location = window.location.pathname;
+    const currentPathName = location.split("/")[1];
+
+    if (currentPathName === "login" || currentPathName === "register") {
+      setIsActive(false);
+    } else setIsActive(true);
+  }, []);
+
   return (
     <div
       className={`flex items-center justify-between lg:px-[160px] lg:py-[24px] md:px-[24px] md:py-[12px] py-[12px] pr-[20px] pl-2 relative`}
@@ -88,7 +98,7 @@ const Header = () => {
         } z-0`}
       ></div>
       <div
-        className="flex items-center justify-center"
+        className={`flex items-center justify-center`}
         onClick={handleOnClickMenu}
         ref={buttonRef}
       >
@@ -110,17 +120,18 @@ const Header = () => {
       </div>
 
       <div
-        className={`lg:w-[140px] md:w-[130px] w-[84px] flex items-center justify-between`}
+        className={`lg:w-[140px] md:w-[130px] w-[84px] flex items-center justify-between  ${
+          isActive ? "opacity-100" : ""
+        }`}
       >
         <button className={`hover:cursor-pointer`}>
           <SearchIcon className={`w-[22px] md:w-[28px] font-bold`} />
         </button>
-        <div
-          className="relative"
-          ref={userRef}
-          onClick={handleOpenMenuLoggedIn}
-        >
-          <button className={`hover:cursor-pointer`}>
+        <div className="relative" ref={userRef}>
+          <button
+            className={`hover:cursor-pointer`}
+            onClick={handleOpenMenuLoggedIn}
+          >
             <UserIcon className={`w-[22px] md:w-[28px] font-bold`} />
           </button>
 
@@ -131,11 +142,20 @@ const Header = () => {
           >
             <button
               className="w-[160px] border-[1px] border-[#FF636D] py-2 rounded-full font-semibold hover:bg-text-gradient hover:text-white my-2 transition-colors duration-150 ease-linear"
-              onClick={() => handleDirection("/login")}
+              onClick={() => {
+                handleDirection("/login");
+                setIsOpenMenuLoggedIn(false);
+              }}
             >
               Đăng nhập
             </button>
-            <button className="w-[160px] border-[1px] border-[#FF636D] py-2 rounded-full font-semibold hover:bg-text-gradient hover:text-white my-2 transition-colors duration-150 ease-linear">
+            <button
+              className="w-[160px] border-[1px] border-[#FF636D] py-2 rounded-full font-semibold hover:bg-text-gradient hover:text-white my-2 transition-colors duration-150 ease-linear"
+              onClick={() => {
+                handleDirection("/register");
+                setIsOpenMenuLoggedIn(false);
+              }}
+            >
               Đăng ký
             </button>
           </div>
