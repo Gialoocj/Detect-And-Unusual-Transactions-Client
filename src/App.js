@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { publicPath, privatePath } from "./routers";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -15,7 +17,6 @@ const App = () => {
               return (
                 <>
                   <Route
-                    exac
                     path={route.path}
                     key={route.path}
                     element={
@@ -29,6 +30,7 @@ const App = () => {
             })}
           </Routes>
         </div>
+        <ToastContainer />
       </Router>
     </>
   );

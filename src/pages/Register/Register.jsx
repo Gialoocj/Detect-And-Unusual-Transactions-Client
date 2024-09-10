@@ -50,7 +50,7 @@ const Register = () => {
               className="lg:w-[520px] md:w-[600px] absolute lg:top-[-80px] md:top-[20px] lg:left-12 md:left-0"
             />
           </div>
-          <div className="col-span-1 flex flex-col items-center justify-center lg:px-[110px] md:px-[20px] text-sm ">
+          <div className="col-span-1 flex flex-col items-center justify-center py-[20px]  lg:px-[110px] md:px-[20px] text-sm ">
             <h1 className="uppercase lg:text-2xl md:text-xl text-center">
               Đăng ký tài khoản
             </h1>
@@ -75,7 +75,7 @@ const Register = () => {
               />
             </div>
 
-            <div className="w-full mt-3">
+            {/* <div className="w-full mt-3">
               <input
                 type="text"
                 name="phoneNumber"
@@ -83,7 +83,7 @@ const Register = () => {
                 className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
                 placeholder="Số điện thoại"
               />
-            </div>
+            </div> */}
 
             <div className="w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center my-3">
               <input
@@ -117,11 +117,8 @@ const Register = () => {
             </button>
 
             <p className="text-gray-500 my-6 text-center">
-              Bạn chưa có tài khoản, vui lòng đăng ký
-              <Link
-                to="/register"
-                className="underline ml-1 hover:text-gradient"
-              >
+              Bạn đã có tài khoản, đăng nhập
+              <Link to="/login" className="underline ml-1 hover:text-gradient">
                 tại đây
               </Link>
             </p>

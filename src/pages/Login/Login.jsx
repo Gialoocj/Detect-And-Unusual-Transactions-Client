@@ -9,10 +9,22 @@ import fbImg from "../../assets/images/fb-btn.svg";
 import googleImg from "../../assets/images/gp-btn.svg";
 import { Link } from "react-router-dom";
 import "./Login.css";
+import { login } from "../../api/authApi";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [hasCharacter, setHasCharacter] = useState("");
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    password: "",
+  });
+  const [validateInput, setValidateInput] = useState({
+    email: false,
+    password: false,
+  });
 
   const handleOnclickPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -20,6 +32,56 @@ const Login = () => {
 
   const handleInputPasswordChange = (e) => {
     setHasCharacter(e.target.value);
+  };
+
+  const handleInputChange = (e) => {
+    setUserCredentials({
+      ...userCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const checkFormatInput = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (value === "") {
+        setValidateInput({ ...validateInput, email: false });
+      } else if (!emailRegex.test(value)) {
+        setValidateInput({ ...validateInput, email: true });
+      } else {
+        setValidateInput({ ...validateInput, email: false });
+      }
+    }
+
+    if (name === "password") {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (value === "") {
+        setValidateInput({ ...validateInput, password: false });
+      } else if (!passwordRegex.test(value)) {
+        setValidateInput({ ...validateInput, password: true });
+      } else {
+        setValidateInput({ ...validateInput, password: false });
+      }
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (validateInput.email === false && validateInput.password === false) {
+      dispatch(login(userCredentials)).then((res) => {
+        if (res.payload.success === false) {
+          toast.error(res.payload.message);
+          return;
+        }
+        toast.success(res.payload.message);
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      });
+    }
   };
 
   return (
@@ -50,7 +112,7 @@ const Login = () => {
               className="lg:w-[520px] md:w-[600px] absolute lg:top-[-80px] md:top-[20px] lg:left-12 md:left-0"
             />
           </div>
-          <div className="col-span-1 flex flex-col items-center justify-center lg:px-[110px] md:px-[20px] text-sm ">
+          <form className="col-span-1 flex flex-col items-center justify-center lg:px-[110px] md:px-[20px] text-sm">
             <h1 className="uppercase lg:text-2xl md:text-xl text-center">
               Đăng nhập tài khoản
             </h1>
@@ -60,32 +122,65 @@ const Login = () => {
                 type="email"
                 name="email"
                 id=""
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                className={`w-full h-[52px] border-2 ${
+                  validateInput.email ? "border-red-500" : "border-[#EBEBEB]"
+                } rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
                 placeholder="Email"
-              />
-            </div>
-
-            <div className="w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center my-3">
-              <input
-                type={`${isShowPassword ? "text" : "password"}`}
-                name="password"
-                id=""
-                className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
-                placeholder="Mật khẩu"
                 onChange={(e) => {
-                  handleInputPasswordChange(e);
+                  handleInputChange(e);
+                }}
+                onBlur={(e) => {
+                  checkFormatInput(e);
                 }}
               />
 
-              <button>
-                {hasCharacter.length > 0 ? (
-                  <div>{isShowPassword ? <EyeOffIcon /> : <EyeIcon />}</div>
-                ) : null}
-              </button>
+              <p
+                className={`text-[13px] mt-1 text-red-500 px-5 ${
+                  validateInput.email ? "block" : "hidden"
+                }`}
+              >
+                Email không đúng định dạng
+              </p>
+            </div>
+
+            <div className="w-full  my-3">
+              <div
+                className={`w-full h-[52px] border-2 ${
+                  validateInput.password ? "border-red-500" : "border-[#EBEBEB]"
+                } rounded-full text-md flex items-center`}
+              >
+                <input
+                  type={`${isShowPassword ? "text" : "password"}`}
+                  name="password"
+                  id=""
+                  className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                  placeholder="Mật khẩu"
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    checkFormatInput(e);
+                  }}
+                />
+                <button>
+                  {hasCharacter.length > 0 ? (
+                    <div>{isShowPassword ? <EyeOffIcon /> : <EyeIcon />}</div>
+                  ) : null}
+                </button>
+              </div>
+
+              <p
+                className={`text-[13px] mt-1 text-red-500 px-5 ${
+                  validateInput.password ? "block" : "hidden"
+                }`}
+              >
+                Mật khẩu không đúng định dạng
+              </p>
             </div>
 
             <button
               className={`w-full h-[52px] rounded-full btn-login text-white`}
+              onClick={handleLogin}
             >
               Đăng nhập
             </button>
@@ -110,7 +205,7 @@ const Login = () => {
                 <img src={googleImg} alt="" className="w-full" />
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </>
