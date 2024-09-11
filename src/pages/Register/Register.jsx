@@ -9,10 +9,26 @@ import fbImg from "../../assets/images/fb-btn.svg";
 import googleImg from "../../assets/images/gp-btn.svg";
 import { Link } from "react-router-dom";
 import "./Register.css";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { register } from "../../api/authApi";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [hasCharacter, setHasCharacter] = useState("");
+  const [isLoading, setIsLoading] = useState("");
+  const [userCredentials, setUserCredentials] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [validateInput, setValidateInput] = useState({
+    username: false,
+    email: false,
+    password: false,
+  });
 
   const handleOnclickPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -20,6 +36,62 @@ const Register = () => {
 
   const handleInputPasswordChange = (e) => {
     setHasCharacter(e.target.value);
+  };
+
+  const handleInputChange = (e) => {
+    setUserCredentials({
+      ...userCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const checkFormatInput = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (value === "") {
+        setValidateInput({ ...validateInput, email: false });
+      } else if (!emailRegex.test(value)) {
+        setValidateInput({ ...validateInput, email: true });
+      } else {
+        setValidateInput({ ...validateInput, email: false });
+      }
+    }
+
+    if (name === "password") {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (value === "") {
+        setValidateInput({ ...validateInput, password: false });
+      } else if (!passwordRegex.test(value)) {
+        setValidateInput({ ...validateInput, password: true });
+      } else {
+        setValidateInput({ ...validateInput, password: false });
+      }
+    }
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    dispatch(register(userCredentials)).then((res) => {
+      if (!res) {
+        toast.error("Có lỗi xảy ra trong quá trình xử lý");
+        return;
+      }
+
+      if (res.payload.code !== 200) {
+        toast.error(res.payload.message);
+        return;
+      }
+
+      toast.success(res.payload.data.message);
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+    });
   };
 
   return (
@@ -58,10 +130,13 @@ const Register = () => {
             <div className="w-full mt-6">
               <input
                 type="text"
-                name="fullname"
+                name="username"
                 id=""
                 className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
                 placeholder="Họ tên"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
               />
             </div>
 
@@ -70,9 +145,24 @@ const Register = () => {
                 type="email"
                 name="email"
                 id=""
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none ${
+                  validateInput.email ? "border-red-500" : "border-[#EBEBEB]"
+                }`}
                 placeholder="Email"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+                onBlur={(e) => {
+                  checkFormatInput(e);
+                }}
               />
+              <p
+                className={`${
+                  validateInput.email ? "block" : "hidden"
+                } text-[13px] mt-1 text-red-500 px-5 `}
+              >
+                Email không đúng định dạng
+              </p>
             </div>
 
             {/* <div className="w-full mt-3">
@@ -85,35 +175,51 @@ const Register = () => {
               />
             </div> */}
 
-            <div className="w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center my-3">
-              <input
-                type={`${isShowPassword ? "text" : "password"}`}
-                name="password"
-                id=""
-                className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
-                placeholder="Mật khẩu"
-                onChange={(e) => {
-                  handleInputPasswordChange(e);
-                }}
-              />
-
-              <button>
-                {hasCharacter.length > 0 ? (
-                  <>
-                    {isShowPassword ? (
-                      <EyeOffIcon className={`w-[24px]`} />
-                    ) : (
-                      <EyeIcon className={`w-[24px]`} />
-                    )}
-                  </>
-                ) : null}
-              </button>
+            <div className="w-full my-3">
+              <div
+                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center ${
+                  validateInput.password ? "border-red-500" : "border-[#EBEBEB]"
+                }`}
+              >
+                <input
+                  type={`${isShowPassword ? "text" : "password"}`}
+                  name="password"
+                  id=""
+                  className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none `}
+                  placeholder="Mật khẩu"
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  onBlur={(e) => {
+                    checkFormatInput(e);
+                  }}
+                />
+                <button>
+                  {hasCharacter.length > 0 ? (
+                    <>
+                      {isShowPassword ? (
+                        <EyeOffIcon className={`w-[24px]`} />
+                      ) : (
+                        <EyeIcon className={`w-[24px]`} />
+                      )}
+                    </>
+                  ) : null}
+                </button>
+              </div>
+              <p
+                className={`${
+                  validateInput.password ? "block" : "hidden"
+                } text-[13px] mt-1 text-red-500 px-5 `}
+              >
+                Mật khẩu không đúng định dạng
+              </p>
             </div>
 
             <button
-              className={`w-full h-[52px] rounded-full btn-login text-white`}
+              className={`w-full h-[52px] rounded-full btn-login text-white hover:cursor-pointer  `}
+              onClick={(e) => handleRegister(e)}
             >
-              Đăng nhập
+              Đăng ký
             </button>
 
             <p className="text-gray-500 my-6 text-center">
