@@ -186,15 +186,28 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
         {productsInformation.map((product, idx) => {
           return <ItemComponent key={idx} product={product} />;
         })}
       </div>
 
-      <div className="w-full bg-[#F0D3D8]">
-        <div className="grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-lg">
-          <div className="cols-span-1"></div>
+      <div className="w-full bg-[#F0D3D8] px-4 py-8 lg:px-12 lg:py-[120px] lg:mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+          <div></div>
+          <div className="flex flex-col justify-start md:flex-row md:items-center">
+            <img src={bgTitle} alt="" className="w-[120px]" />
+            <span className="uppercase text-3xl">Deal cuối tuần</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 h-[456px] bg-white rounded-xl shadow-lg">
+          <div className="cols-span-1 hidden md:block">
+            <img
+              src={BgDealWeekend}
+              alt="bg_deal_weekend"
+              className="h-full w-full object-fill md:scale-100 lg:scale-110 lg:translate-y-[-40px]"
+            />
+          </div>
           <div className="cols-span-1"></div>
         </div>
       </div>
