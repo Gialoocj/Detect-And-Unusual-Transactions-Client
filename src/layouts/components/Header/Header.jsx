@@ -3,10 +3,12 @@ import {
   MenuIcon,
   SearchIcon,
   UserIcon,
+  UserIcon2,
   CartIcon,
 } from "../../../components/icons/icons";
 import logo from "../../../assets/images/logo.webp";
 import { useNavigate, Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const categories = [
   { name: "Trang chủ", path: "/" },
@@ -35,6 +37,7 @@ const Header = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenMenuLoggedIn, setIsOpenMenuLoggedIn] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -87,6 +90,16 @@ const Header = () => {
       setIsActive(false);
     } else setIsActive(true);
   }, []);
+
+  useEffect(() => {
+    const accessToken = Cookies.get("accessToken");
+    if (!accessToken) {
+      console.log(accessToken);
+      return;
+    }
+
+    console.log(accessToken);
+  });
 
   return (
     <div

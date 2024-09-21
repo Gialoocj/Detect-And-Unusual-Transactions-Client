@@ -90,8 +90,14 @@ const Register = () => {
 
       setTimeout(() => {
         window.location.href = "/login";
-      }, 1000);
+      }, 1500);
     });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleRegister(e);
+    }
   };
 
   return (
@@ -122,124 +128,144 @@ const Register = () => {
               className="lg:w-[520px] md:w-[600px] absolute lg:top-[-80px] md:top-[20px] lg:left-12 md:left-0"
             />
           </div>
-          <div className="col-span-1 flex flex-col items-center justify-center py-[20px]  lg:px-[110px] md:px-[20px] text-sm ">
-            <h1 className="uppercase lg:text-2xl md:text-xl text-center">
-              Đăng ký tài khoản
-            </h1>
-
-            <div className="w-full mt-6">
-              <input
-                type="text"
-                name="username"
-                id=""
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
-                placeholder="Họ tên"
-                onChange={(e) => {
-                  handleInputChange(e);
-                }}
-              />
-            </div>
-
-            <div className="w-full mt-3">
-              <input
-                type="email"
-                name="email"
-                id=""
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none ${
-                  validateInput.email ? "border-red-500" : "border-[#EBEBEB]"
-                }`}
-                placeholder="Email"
-                onChange={(e) => {
-                  handleInputChange(e);
-                }}
-                onBlur={(e) => {
-                  checkFormatInput(e);
-                }}
-              />
-              <p
-                className={`${
-                  validateInput.email ? "block" : "hidden"
-                } text-[13px] mt-1 text-red-500 px-5 `}
-              >
-                Email không đúng định dạng
-              </p>
-            </div>
-
-            {/* <div className="w-full mt-3">
-              <input
-                type="text"
-                name="phoneNumber"
-                id=""
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
-                placeholder="Số điện thoại"
-              />
-            </div> */}
-
-            <div className="w-full my-3">
-              <div
-                className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center ${
-                  validateInput.password ? "border-red-500" : "border-[#EBEBEB]"
-                }`}
-              >
+          <form onSubmit={handleRegister} className="w-full">
+            <div className="col-span-1 flex flex-col items-center justify-center py-[20px]  lg:px-[110px] md:px-[20px] text-sm ">
+              <h1 className="uppercase lg:text-2xl md:text-xl text-center">
+                Đăng ký tài khoản
+              </h1>
+              <div className="w-full mt-6">
                 <input
-                  type={`${isShowPassword ? "text" : "password"}`}
-                  name="password"
+                  type="text"
+                  name="username"
                   id=""
-                  className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none `}
-                  placeholder="Mật khẩu"
+                  className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                  placeholder="Họ tên"
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+              <div className="w-full mt-3">
+                <input
+                  type="email"
+                  name="email"
+                  id=""
+                  className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none ${
+                    validateInput.email ? "border-red-500" : "border-[#EBEBEB]"
+                  }`}
+                  placeholder="Email"
                   onChange={(e) => {
                     handleInputChange(e);
                   }}
                   onBlur={(e) => {
                     checkFormatInput(e);
                   }}
+                  onKeyDown={handleKeyDown}
                 />
-                <button>
-                  {hasCharacter.length > 0 ? (
-                    <>
-                      {isShowPassword ? (
-                        <EyeOffIcon className={`w-[24px]`} />
-                      ) : (
-                        <EyeIcon className={`w-[24px]`} />
-                      )}
-                    </>
-                  ) : null}
+                <p
+                  className={`${
+                    validateInput.email ? "block" : "hidden"
+                  } text-[13px] mt-1 text-red-500 px-5 `}
+                >
+                  Email không đúng định dạng
+                </p>
+              </div>
+              {/* <div className="w-full mt-3">
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id=""
+                  className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md px-6 placeholder:text-sm placeholder:text-gray-400 focus:outline-none`}
+                  placeholder="Số điện thoại"
+                />
+              </div> */}
+              <div className="w-full my-3">
+                <div
+                  className={`w-full h-[52px] border-2 border-[#EBEBEB] rounded-full text-md flex items-center ${
+                    validateInput.password
+                      ? "border-red-500"
+                      : "border-[#EBEBEB]"
+                  }`}
+                >
+                  <input
+                    type={`${isShowPassword ? "text" : "password"}`}
+                    name="password"
+                    id=""
+                    className={`w-full h-full rounded-full px-4 placeholder:text-sm placeholder:text-gray-400 focus:outline-none `}
+                    placeholder="Mật khẩu"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    onBlur={(e) => {
+                      checkFormatInput(e);
+                    }}
+                    onKeyDown={handleKeyDown}
+                  />
+                  <button>
+                    {hasCharacter.length > 0 ? (
+                      <>
+                        {isShowPassword ? (
+                          <EyeOffIcon className={`w-[24px]`} />
+                        ) : (
+                          <EyeIcon className={`w-[24px]`} />
+                        )}
+                      </>
+                    ) : null}
+                  </button>
+                </div>
+                <p
+                  className={`${
+                    validateInput.password ? "block" : "hidden"
+                  } text-[13px] mt-1 text-red-500 px-5 `}
+                >
+                  Mật khẩu không đúng định dạng
+                </p>
+              </div>
+              <div className="flex items-center w-full justify-between ml-2 mb-2 px-2">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="showPassword"
+                    id=""
+                    className="w-4 h-4"
+                    onClick={() => setIsShowPassword(!isShowPassword)}
+                  />
+                  <span className="ml-2 ">Hiển thị mật khẩu</span>
+                </div>
+                <Link
+                  to="/forgot-password"
+                  className=" ml-1 hover:text-gradient"
+                >
+                  Quên mật khẩu
+                </Link>
+              </div>
+              <button
+                className={`w-full h-[52px] rounded-full btn-login text-white hover:cursor-pointer  `}
+                type="submit"
+              >
+                Đăng ký
+              </button>
+              <p className="text-gray-500 my-6 text-center">
+                Bạn đã có tài khoản, đăng nhập
+                <Link
+                  to="/login"
+                  className="underline ml-1 hover:text-gradient"
+                >
+                  tại đây
+                </Link>
+              </p>
+              <p className="text-center mb-4">Hoặc đăng nhập bằng</p>
+              <div className="flex justify-between lg:px-8 ">
+                <button className="col-span-1 mx-2 my-[14px] lg:w-[160px] w-1/2 h-[24px]">
+                  <img src={fbImg} alt="" className="w-full" />
+                </button>
+                <button className="col-span-1 mx-2 my-[14px] lg:w-[160px] w-1/2 h-[24px]">
+                  <img src={googleImg} alt="" className="w-full" />
                 </button>
               </div>
-              <p
-                className={`${
-                  validateInput.password ? "block" : "hidden"
-                } text-[13px] mt-1 text-red-500 px-5 `}
-              >
-                Mật khẩu không đúng định dạng
-              </p>
             </div>
-
-            <button
-              className={`w-full h-[52px] rounded-full btn-login text-white hover:cursor-pointer  `}
-              onClick={(e) => handleRegister(e)}
-            >
-              Đăng ký
-            </button>
-
-            <p className="text-gray-500 my-6 text-center">
-              Bạn đã có tài khoản, đăng nhập
-              <Link to="/login" className="underline ml-1 hover:text-gradient">
-                tại đây
-              </Link>
-            </p>
-
-            <p className="text-center mb-4">Hoặc đăng nhập bằng</p>
-
-            <div className="flex justify-between lg:px-8 ">
-              <button className="col-span-1 mx-2 my-[14px] lg:w-[160px] w-1/2 h-[24px]">
-                <img src={fbImg} alt="" className="w-full" />
-              </button>
-              <button className="col-span-1 mx-2 my-[14px] lg:w-[160px] w-1/2 h-[24px]">
-                <img src={googleImg} alt="" className="w-full" />
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </>

@@ -27,7 +27,7 @@ export const register = createAsyncThunk(
         `${base_url}/api/v1/auth/register`,
         credentials
       );
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
